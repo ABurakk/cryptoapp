@@ -6,14 +6,14 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cryptolistapp.app.navigation.CurrentCoinHolder
 import com.example.cryptolistapp.app.navigation.Screen
+import com.example.cryptolistapp.detail.ui.DetailPage
 import com.example.cryptolistapp.home.ui.HomePage
 
 @SuppressLint("ComposeModifierMissing")
@@ -30,16 +30,17 @@ fun AppNavHost(
         composable(route = Screen.Home.route) {
             HomePage(
                 onNavigateDetails = {
-                    navController.navigate(Screen.Details.route + "/$it")
-                },
+                    CurrentCoinHolder.currentCoinId = it
+                    navController.navigate(Screen.Details.route)
+                }
             )
         }
         composable(
-            route = Screen.Details.route + "/{coinId}",
+            route = Screen.Details.route,
             enterTransition = { fadeIn(animationSpec = tween(500)) },
             exitTransition = { fadeOut(animationSpec = tween(500)) }
         ) {
-            Text(text = "Detail")
+            DetailPage(onBack = { navController.popBackStack() })
         }
     }
 }

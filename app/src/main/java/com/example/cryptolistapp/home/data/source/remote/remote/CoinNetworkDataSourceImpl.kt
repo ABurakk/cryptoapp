@@ -1,6 +1,7 @@
 package com.example.cryptolistapp.home.data.source.remote.remote
 
 import com.example.cryptolistapp.data.source.remote.CoinsApiModel
+import com.example.cryptolistapp.detail.data.detail.CoinDetailsApiModel
 import com.example.cryptolistapp.home.domain.CoinSort
 import retrofit2.Response
 import javax.inject.Inject
@@ -12,6 +13,12 @@ class CoinNetworkDataSourceImpl @Inject constructor(
         return coinApi.getCoins(
             orderBy = coinSort.getOrderBy(),
             orderDirection = coinSort.getOrderDirection()
+        )
+    }
+
+    override suspend fun getCoinDetails(coinId: String): Response<CoinDetailsApiModel> {
+        return coinApi.getCoinDetails(
+            coinId = coinId,
         )
     }
 }
