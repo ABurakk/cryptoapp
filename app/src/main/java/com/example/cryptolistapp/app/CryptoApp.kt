@@ -1,4 +1,4 @@
-package com.example.cryptolistapp
+package com.example.cryptolistapp.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

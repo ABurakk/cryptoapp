@@ -24,8 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cryptolistapp.R
 import com.example.cryptolistapp.app.navigation.CurrentCoinHolder
 import com.example.cryptolistapp.common.ui.components.ErrorScreen
 import com.example.cryptolistapp.common.ui.components.LoadingIndicator
@@ -133,7 +135,7 @@ fun DetailScreenTopBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(text = "Coin Details") },
+        title = { Text(text = stringResource(R.string.coin_details)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back")

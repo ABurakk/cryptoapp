@@ -1,6 +1,7 @@
 package com.example.cryptolistapp.detail.data.favorite
 
 import com.example.cryptolistapp.common.Result
+import com.example.cryptolistapp.home.data.repository.CoinError
 import com.example.cryptolistapp.home.data.source.local.LocalCoinDataSource
 import com.example.cryptolistapp.home.data.source.local.model.FavouriteCoinId
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ class FavouriteCoinIdRepositoryImpl @Inject constructor(
         return coinLocalDataSource.checkIfCoinIsFavourite(favouriteCoinId = favouriteCoinId)
             .map { Result.Success(it) }
             .catch { e ->
-                Result.Error<Boolean>("Unable to fetch if coin is favourite")
+                Result.Error<Boolean>(CoinError.NETWORK_ERROR.message)
             }
             .flowOn(Dispatchers.IO)
     }

@@ -31,8 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cryptolistapp.R
 import com.example.cryptolistapp.common.ui.components.LoadingIndicator
 import com.example.cryptolistapp.common.ui.components.OnScreenStarted
 import com.example.cryptolistapp.common.ui.pullrefresh.PullRefreshIndicator
@@ -199,7 +201,7 @@ fun HomeScreenTopBar(
         title = {
             Column(modifier = Modifier.animateContentSize()) {
                 Text(
-                    text = "Home",
+                    text = stringResource(R.string.home),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )

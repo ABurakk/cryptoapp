@@ -3,6 +3,7 @@ package com.example.cryptolistapp.home.ui
 import androidx.lifecycle.viewModelScope
 import com.example.cryptolistapp.common.Result
 import com.example.cryptolistapp.common.ui.FlowMviViewModel
+import com.example.cryptolistapp.home.data.repository.CoinError
 import com.example.cryptolistapp.home.domain.GetCoinsUseCase
 import com.example.cryptolistapp.home.domain.RefreshLocalCoinsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,9 +47,8 @@ class HomeScreenViewModel @Inject constructor(
 
                         is Result.Error -> {
                             internalState.update {
-                                val errorMessages = it.errorMessage
                                 it.copy(
-                                    errorMessage = errorMessages,
+                                    errorMessage = CoinError.NETWORK_ERROR.message,
                                     isLoading = false
                                 )
                             }

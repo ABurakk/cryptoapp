@@ -82,11 +82,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
 
-        on<DetailsEvent.Retry> {
-            val coinId = this.coinId ?: return@on
-            initialiseUiState(coinId)
-        }
-
         on<DetailsEvent.ShowError> { event ->
             internalState.update {
                 it.copy(
