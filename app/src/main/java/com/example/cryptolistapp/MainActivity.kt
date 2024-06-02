@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.cryptolistapp.app.AppNavHost
 import com.example.cryptolistapp.common.theme.CryptolistappTheme
 import com.example.cryptolistapp.home.ui.HomePage
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CryptolistappTheme {
-                HomePage(onNavigateDetails = {})
+                AppNavHost()
             }
         }
     }
@@ -31,12 +32,4 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello $name!",
         modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CryptolistappTheme {
-        Greeting("Android")
-    }
 }
