@@ -25,8 +25,8 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     private fun handleEvents() {
-        on<HomeScreenEvent.Initialise> {
-            updateCachedCoins()
+        on<HomeScreenEvent.ScreenOpened> {
+            updateCachedCoinsUseCase()
             internalState.update { it.copy(isLoading = true) }
             viewModelScope.launch {
                 combine(
@@ -62,11 +62,16 @@ class HomeScreenViewModel @Inject constructor(
             viewModelScope.launch {
                 internalState.update { it.copy(isRefreshing = true) }
                 delay(250.milliseconds)
-
-
                 updateCachedCoins()
-
                 internalState.update { it.copy(isRefreshing = false) }
+            }
+        }
+
+        on<HomeScreenEvent.SortCoins> { event ->
+            viewModelScope.launch {
+                internalState.update {
+                    it.copy(coinSort = event.coinSort)
+                }
             }
         }
 

@@ -2,14 +2,18 @@ package com.example.cryptolistapp.home.ui
 
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,7 +39,9 @@ import com.example.cryptolistapp.common.ui.pullrefresh.PullRefreshIndicator
 import com.example.cryptolistapp.common.ui.pullrefresh.pullRefresh
 import com.example.cryptolistapp.common.ui.pullrefresh.rememberPullRefreshState
 import com.example.cryptolistapp.home.data.source.local.model.Coin
+import com.example.cryptolistapp.home.domain.CoinSort
 import com.example.cryptolistapp.home.ui.components.CoinItem
+import com.example.cryptolistapp.home.ui.components.CoinSortChip
 
 @Composable
 fun HomePage(
@@ -44,12 +50,15 @@ fun HomePage(
 ) {
     val uiState by viewModel.state.collectAsState()
     OnScreenStarted {
-        viewModel.dispatch(HomeScreenEvent.Initialise)
+        viewModel.dispatch(HomeScreenEvent.ScreenOpened)
     }
     HomeScreen(
         uiState = uiState,
         onCoinClick = { coin ->
             onNavigateDetails(coin.id)
+        },
+        onCoinSort = {
+            viewModel.dispatch(HomeScreenEvent.SortCoins(it))
         },
         onRefresh = {
             viewModel.dispatch(HomeScreenEvent.PullRefresh)
@@ -66,6 +75,7 @@ fun HomePage(
 fun HomeScreen(
     uiState: HomeScreenState,
     onCoinClick: (Coin) -> Unit,
+    onCoinSort: (CoinSort) -> Unit,
     onRefresh: () -> Unit,
     onDismissError: () -> Unit,
     modifier: Modifier = Modifier
@@ -104,7 +114,11 @@ fun HomeScreen(
                     HomeScreenContent(
                         coins = uiState.coins,
                         onCoinClick = onCoinClick,
-                        lazyListState = listState
+                        onUpdateCoinSort = {
+                            onCoinSort(it)
+                        },
+                        lazyListState = listState,
+                        coinSort = uiState.coinSort
                     )
                 }
             }
@@ -130,6 +144,8 @@ fun HomeScreen(
 fun HomeScreenContent(
     coins: List<Coin>,
     onCoinClick: (Coin) -> Unit,
+    coinSort: CoinSort,
+    onUpdateCoinSort: (CoinSort) -> Unit,
     lazyListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -141,6 +157,22 @@ fun HomeScreenContent(
             contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
             modifier = modifier
         ) {
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(bottom = 8.dp)
+                ) {
+                    CoinSort.entries.forEach { coinSortEntry ->
+                        CoinSortChip(
+                            coinSort = coinSortEntry,
+                            selected = coinSortEntry == coinSort,
+                            onClick = { onUpdateCoinSort(coinSortEntry) }
+                        )
+                    }
+                }
+            }
             items(
                 count = coins.size,
                 key = { coins[it].id },
