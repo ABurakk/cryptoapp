@@ -14,13 +14,13 @@ interface CoinDao {
     fun getCoins(): Flow<List<Coin>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCoins(coins: List<Coin>)
+    suspend fun insertCoins(coins: List<Coin>)
 
     @Query("DELETE FROM Coin")
-    fun deleteAllCoins()
+    suspend fun deleteAllCoins()
 
     @Transaction
-    fun updateCoins(coins: List<Coin>) {
+    suspend fun updateCoins(coins: List<Coin>) {
         deleteAllCoins()
         insertCoins(coins)
     }

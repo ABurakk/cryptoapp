@@ -39,7 +39,10 @@ object RetrofitModule {
         val apiKeyInterceptor = Interceptor { chain ->
             val newRequest = chain.request()
                 .newBuilder()
-                .header("x-access-token", "key")
+                .header(
+                    "x-access-token",
+                    "coinranking1e4df5b69fac28ef3ec4f337d4517deb0198eb7192cbc98d"
+                )
                 .build()
 
             chain.proceed(newRequest)
