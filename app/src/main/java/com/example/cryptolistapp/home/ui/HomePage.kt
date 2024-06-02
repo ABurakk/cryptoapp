@@ -105,23 +105,16 @@ fun HomeScreen(
                 .pullRefresh(pullRefreshState)
                 .padding(scaffoldPadding)
         ) {
-            when {
-                uiState.isLoading -> {
-                    LoadingIndicator()
-                }
-
-                else -> {
-                    HomeScreenContent(
-                        coins = uiState.coins,
-                        onCoinClick = onCoinClick,
-                        onUpdateCoinSort = {
-                            onCoinSort(it)
-                        },
-                        lazyListState = listState,
-                        coinSort = uiState.coinSort
-                    )
-                }
-            }
+            HomeScreenContent(
+                uiState = uiState,
+                coins = uiState.coins,
+                onCoinClick = onCoinClick,
+                onUpdateCoinSort = {
+                    onCoinSort(it)
+                },
+                lazyListState = listState,
+                coinSort = uiState.coinSort
+            )
 
             PullRefreshIndicator(
                 refreshing = uiState.isRefreshing,
@@ -142,6 +135,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent(
+    uiState: HomeScreenState,
     coins: List<Coin>,
     onCoinClick: (Coin) -> Unit,
     coinSort: CoinSort,
@@ -173,18 +167,24 @@ fun HomeScreenContent(
                     }
                 }
             }
-            items(
-                count = coins.size,
-                key = { coins[it].id },
-                itemContent = { index ->
-                    val coinListItem = coins[index]
-
-                    CoinItem(
-                        coin = coinListItem,
-                        onCoinClick = { onCoinClick(coinListItem) },
-                    )
+            if (uiState.isLoading) {
+                item {
+                    LoadingIndicator()
                 }
-            )
+            } else {
+                items(
+                    count = coins.size,
+                    key = { coins[it].id },
+                    itemContent = { index ->
+                        val coinListItem = coins[index]
+
+                        CoinItem(
+                            coin = coinListItem,
+                            onCoinClick = { onCoinClick(coinListItem) },
+                        )
+                    }
+                )
+            }
         }
     }
 }
