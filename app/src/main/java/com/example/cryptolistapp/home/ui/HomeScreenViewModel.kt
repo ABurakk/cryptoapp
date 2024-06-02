@@ -70,7 +70,16 @@ class HomeScreenViewModel @Inject constructor(
         on<HomeScreenEvent.SortCoins> { event ->
             viewModelScope.launch {
                 internalState.update {
-                    it.copy(coinSort = event.coinSort)
+                    it.copy(
+                        coinSort = event.coinSort,
+                        isLoading = true
+                    )
+                }
+                updateCachedCoinsUseCase(coinSort = event.coinSort)
+                internalState.update {
+                    it.copy(
+                        isLoading = false
+                    )
                 }
             }
         }

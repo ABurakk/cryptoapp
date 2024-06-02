@@ -5,6 +5,7 @@ import com.example.cryptolistapp.home.data.mapper.CoinMapper
 import com.example.cryptolistapp.home.data.source.local.LocalCoinDataSource
 import com.example.cryptolistapp.home.data.source.local.model.Coin
 import com.example.cryptolistapp.home.data.source.remote.remote.CoinNetworkDataSource
+import com.example.cryptolistapp.home.domain.CoinSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -16,9 +17,9 @@ class CoinRepositoryImpl @Inject constructor(
     private val coinMapper: CoinMapper,
 ) : CoinRepository {
 
-    override suspend fun fetchRemoteCoins(): Result<List<Coin>> {
+    override suspend fun fetchRemoteCoins(coinSort: CoinSort): Result<List<Coin>> {
         return try {
-            val response = coinNetworkDataSource.getCoins()
+            val response = coinNetworkDataSource.getCoins(coinSort)
             val body = response.body()
             if (response.isSuccessful && body?.coinsData != null) {
                 Result.Success(coinMapper.mapApiModelToModel(body))
