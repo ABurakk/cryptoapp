@@ -1,4 +1,4 @@
-package com.example.cryptolistapp.ui.theme
+package com.example.cryptolistapp.common.theme
 
 import androidx.compose.ui.graphics.Color
 

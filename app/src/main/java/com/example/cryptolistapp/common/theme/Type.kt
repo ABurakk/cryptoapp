@@ -1,4 +1,4 @@
-package com.example.cryptolistapp.ui.theme
+package com.example.cryptolistapp.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
